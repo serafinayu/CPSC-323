@@ -1,0 +1,9 @@
+token          lexeme
+-------------------------------------------
+while          KEYWORD
+s              IDENTIFIER
+<              OPERATOR
+upper          IDENTIFIER
+t              IDENTIFIER
+=              OPERATOR
+33.00          IS NOT A VALID IDENTIFIER
