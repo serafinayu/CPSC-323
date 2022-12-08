@@ -1,49 +1,199 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <vector>
 
 using namespace std;
+
+void stackImplementation(vector<char>& input);
+void printStackContents(vector<char> input, vector<char> output);
 
 int main() {
 
     // Put the input string into "input"
-    string input = "";
+    string inp;
     cout << "Input : " << endl;
-    cin >> input;
+    cin >> inp;
 
-    // "output" will hold the states from the stack and be compared to "input" 
-    string output = "";
-
-    // Create a 2d array to hold the stack implementation and the input
-    const int SIZE = 100;
-    string stackArray[2][SIZE] = "";
-
-    string cfg[10][10] = {{"E", "TQ"}, {"Q", "+TQ"}, {"Q", "-TQ"}, 
-                          {"Q", ""}, {"T", "FR"}, {"R", "*FR"}, {"R", "/FR"}, 
-                          {"R", ""}, {"F", "(E)"}, {"F", "a"}}
+    vector<char> vinp;
+    copy(inp.begin(), inp.end(), back_inserter(vinp));
 
     // Begin stack and input string in the array
-    stackArray[0][0] = "Stack";
-    stackArray[1][0] = "Input";
-
-    // Stack implementation
-    for (int i = 0; i <= input.length(); i++)
-    {
-        for (int j = 0; j <= output.length(); j++)
-        {
-            if (input[i] != output[i])
-            {
-                switch (input[i])
-                {
-                    case "a":
-                        if (output[j] == "")
-                        {
-                            
-                        }
-                }
-            }
-        }
-    }
+    stackImplementation(vinp);
             
 
 }
+
+void printStackContents(vector<char> input, vector<char> output)
+{
+    for(int i=0; i < output.size(); i++)
+        cout << left << setw(10) << output.at(i);
+
+}
+
+void stackImplementation(vector<char>& input) { // parse the input string 
+
+    // Create a vector to hold the stack iterations and compare the input to
+    vector<char> output;
+    output.insert(output.begin(), {'E', '$'});
+
+    // Format the stack headers
+    cout << left << setw(10) << "Stack" << endl;
+    cout << "--------------------------" << endl;
+    printStackContents(input, output);
+    
+
+    int stop = 0;
+    while (input != output)
+    {
+        for (int i = 0; i <= input.size(); i++)
+        {
+
+            if (input.at(i) = 'a')
+            {
+                while (input.at(i) != output.at(i))
+                {
+                    if (output.at(i) == 'E')
+                    {
+                        output.erase(output.at(i));
+                        output.at(i) = 'T';
+                        output.at(i+1) = 'Q';
+                    }
+                    else if (output[i] == 'T')
+                    {
+                        output[i] = 'F';
+                        output[i+1] = 'R';
+                    }
+                    else if (output[i] == 'F')
+                    {
+                        output[i] = 'a';
+                    }
+                    else if (output[i] == 'R' || output[i] == 'Q')
+                    {
+                        stop++;
+                        break;
+                    } 
+                }
+            }    
+            else if (input.at(i) = '+')
+            {
+                while (input.at(i) != output.at(i))
+                {
+                    if (output[i] == 'E' || output[i] == 'T' || output[i] == 'F' )
+                    {
+                        stop++;
+                        break;
+                    }
+                    else if (output[i] == 'R')
+                    {
+                        output[i] = '\0';
+                    }
+                    else if (output[i] == 'Q')
+                    {
+                        output[i] = '+';
+                        output[i+1] = 'T';
+                        output[i+2] = 'Q';
+                    } 
+                }
+            }   
+            else if (input.at(i) = '-')
+            {
+                while (input.at(i) != output.at(i))
+                {
+                    if (output[i] == 'E' || output[i] == 'T' || output[i] == 'F' )
+                    {
+                        stop++;
+                        break;
+                    }
+                    else if (output[i] == 'R')
+                    {
+                        output[i] = '\0';
+                    }
+                    else if (output[i] == 'Q')
+                    {
+                        output[i] = '-';
+                        output[i+1] = 'T';
+                        output[i+2] = 'Q';
+                    } 
+                }
+            }     
+            else if (input.at(i) = '*')
+            {
+                while (input.at(i) != output.at(i))
+                {
+                    if (output[i] == 'E' || output[i] == 'T' || output[i] == 'F' )
+                    {
+                        stop++;
+                        break;
+                    }
+                    else if (output[i] == 'Q')
+                    {
+                        output[i] = '\0';
+                    }
+                    else if (output[i] == 'R')
+                    {
+                        output[i] = '*';
+                        output[i+1] = 'F';
+                        output[i+2] = 'R';
+                    } 
+                }
+            }     
+            else if (input.at(i) = '/')
+            {
+                while (input.at(i) != output.at(i))
+                {
+                    if (output[i] == 'E' || output[i] == 'T' || output[i] == 'F' )
+                    {
+                        stop++;
+                        break;
+                    }
+                    else if (output[i] == 'Q')
+                    {
+                        output[i] = '\0';
+                    }
+                    else if (output[i] == 'R')
+                    {
+                        output[i] = '/';
+                        output[i+1] = 'F';
+                        output[i+2] = 'R';
+                    } 
+                }
+            }     
+            else if (input.at(i) = '(')
+            {
+                while (input.at(i) != output.at(i))
+                {
+                    if (output[i] == 'E')
+                    {
+                        output[i] = 'T';
+                        output[i+1] = 'Q';
+                    }
+                    else if (output[i] == 'Q')
+                    {
+                        output[i] = '\0';
+                    }
+                    else if (output[i] == 'R')
+                    {
+                        output[i] = '/';
+                        output[i+1] = 'F';
+                        output[i+2] = 'R';
+                        break;
+                    } 
+                }
+            }     
+            else if (input[i] = ')')
+            {
+
+            }     
+        }
+        
+    }
+                    
+
+}
+
+void symbolIdentifier(char * input)
+
+
+// Create a function for each type of input (a, +, -, *, /, (, ))
+    // In their functions, list the different rules depending on the 
